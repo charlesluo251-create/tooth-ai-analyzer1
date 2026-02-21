@@ -2,6 +2,32 @@ const http = require('http');
 const fs = require('fs');
 const path = require('path');
 
+function loadEnvFromFile(filePath = path.join(__dirname, '.env')) {
+  if (!fs.existsSync(filePath)) return;
+
+  const content = fs.readFileSync(filePath, 'utf8');
+  for (const rawLine of content.split(/\r?\n/)) {
+    const line = rawLine.trim();
+    if (!line || line.startsWith('#')) continue;
+
+    const idx = line.indexOf('=');
+    if (idx <= 0) continue;
+
+    const key = line.slice(0, idx).trim();
+    let value = line.slice(idx + 1).trim();
+
+    if ((value.startsWith('"') && value.endsWith('"')) || (value.startsWith("'") && value.endsWith("'"))) {
+      value = value.slice(1, -1);
+    }
+
+    if (!(key in process.env)) {
+      process.env[key] = value;
+    }
+  }
+}
+
+loadEnvFromFile();
+
 const port = Number(process.env.PORT || 3000);
 const model = process.env.ARK_MODEL || 'doubao-seed-1-8-251228';
 
