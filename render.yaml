@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: tooth-ai-analyzer
+    env: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    autoDeploy: true
+    envVars:
+      - key: ARK_API_KEY
+        sync: false
+      - key: ARK_MODEL
+        value: doubao-seed-1-8-251228
+      - key: PORT
+        value: 10000
