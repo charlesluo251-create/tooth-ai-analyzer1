@@ -176,3 +176,4 @@ const server = http.createServer((req, res) => {
 server.listen(port, () => {
   console.log(`Tooth analyzer running on http://localhost:${port}`);
 });
+
